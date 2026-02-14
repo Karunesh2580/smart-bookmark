@@ -1,8 +1,25 @@
 "use client";
 
 import { supabase } from "@/lib/supabase";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function AuthPage() {
+  const router = useRouter();
+
+  // 🔥 THIS FIXES FIRST LOGIN REDIRECT ISSUE
+  useEffect(() => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session) {
+        router.replace("/");
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [router]);
+
   const signIn = async () => {
     await supabase.auth.signInWithOAuth({
       provider: "google",

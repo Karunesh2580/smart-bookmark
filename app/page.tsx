@@ -19,20 +19,35 @@ export default function Home() {
 
   const categories = ["General", "Study", "Work", "Personal"];
 
+  // ✅ FIX LOGIN REDIRECT
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => {
-      if (!data.user) router.push("/auth");
-      else setUser(data.user);
+    supabase.auth.getSession().then(({ data }) => {
+      if (!data.session) {
+        router.replace("/auth");
+      } else {
+        setUser(data.session.user);
+        fetchBookmarks();
+      }
+      setLoading(false);
     });
-
-    fetchBookmarks();
   }, []);
 
+  // ✅ FIX DARK MODE
+  useEffect(() => {
+    if (dark) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [dark]);
+
   const fetchBookmarks = async () => {
-    setLoading(true);
-    const { data } = await supabase.from("bookmarks").select("*").order("id", { ascending: false });
+    const { data } = await supabase
+      .from("bookmarks")
+      .select("*")
+      .order("id", { ascending: false });
+
     setBookmarks(data || []);
-    setLoading(false);
   };
 
   const addBookmark = async () => {
@@ -70,7 +85,7 @@ export default function Home() {
 
   const logout = async () => {
     await supabase.auth.signOut();
-    router.push("/auth");
+    router.replace("/auth");
   };
 
   const filtered = bookmarks.filter((b) =>
@@ -80,7 +95,7 @@ export default function Home() {
   if (!user) return null;
 
   return (
-    <div className={`${dark ? "dark" : ""}`}>
+    <div>
       <div className="min-h-screen bg-gray-100 dark:bg-gray-900 px-4 py-6">
 
         {/* HEADER */}
