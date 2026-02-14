@@ -37,6 +37,17 @@ Solved by removing deprecated auth helpers and switching to supabase-js client d
 4. Environment variables missing on Vercel  
 Solved by adding NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in Vercel project settings.
 
+## What I learned from this project
+
+- How OAuth authentication works end-to-end using Supabase.
+- Handling client-side auth state properly in Next.js App Router.
+- Debugging redirect loops and session issues.
+- Deploying full-stack apps on Vercel with environment variables.
+- Designing responsive UI using Tailwind CSS.
+- Structuring real-world CRUD apps with authentication.
+
+This project helped me understand real production issues like auth flow, deployment bugs, and database integration.
+
 ## How to run locally
 
 ```bash
