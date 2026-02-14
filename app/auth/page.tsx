@@ -7,14 +7,16 @@ import { useRouter } from "next/navigation";
 export default function AuthPage() {
   const router = useRouter();
 
-  // 🔥 THIS FIXES FIRST LOGIN REDIRECT ISSUE
+  // Redirect if already logged in
   useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => {
+      if (data.session) router.replace("/");
+    });
+
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (session) {
-        router.replace("/");
-      }
+      if (session) router.replace("/");
     });
 
     return () => subscription.unsubscribe();
@@ -24,7 +26,7 @@ export default function AuthPage() {
     await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: `${window.location.origin}/`,
+        redirectTo: `${window.location.origin}/auth/callback`,
       },
     });
   };
