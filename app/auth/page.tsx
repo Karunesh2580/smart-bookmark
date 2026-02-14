@@ -1,11 +1,14 @@
 "use client";
 
-import { supabase } from "../../lib/supabase";
+import { supabase } from "@/lib/supabase";
 
 export default function AuthPage() {
-  const loginWithGoogle = async () => {
+  const signIn = async () => {
     await supabase.auth.signInWithOAuth({
       provider: "google",
+      options: {
+        redirectTo: window.location.origin,
+      },
     });
   };
 
@@ -13,10 +16,10 @@ export default function AuthPage() {
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-10 rounded-xl shadow-lg text-center">
         <h1 className="text-2xl font-bold mb-6">Smart Bookmark</h1>
-        <p className="mb-4">Login with your Google account to continue</p>
+
         <button
-          onClick={loginWithGoogle}
-          className="bg-red-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-700 transition"
+          onClick={signIn}
+          className="bg-black text-white px-6 py-3 rounded-lg hover:opacity-80"
         >
           Login with Google
         </button>
