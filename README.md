@@ -1,5 +1,7 @@
 # Smart Bookmark App
 
+Built by: Karunesh Kumar Pandey
+
 Live Demo:
 https://smart-bookmark-pfa4.vercel.app
 

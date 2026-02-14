@@ -1,28 +1,33 @@
 "use client";
 
-import { supabase } from "@/lib/supabase";
+import { supabase } from "../../lib/supabase";
 
 export default function AuthPage() {
-  const signIn = async () => {
-    await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: {
-        redirectTo: window.location.origin,
-      },
-    });
-  };
-
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white p-10 rounded-xl shadow-lg text-center">
-        <h1 className="text-2xl font-bold mb-6">Smart Bookmark</h1>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-600 to-purple-700">
+      <div className="bg-white p-10 rounded-xl shadow-xl w-full max-w-md text-center">
+        <h1 className="text-3xl font-bold mb-2">Smart Bookmark</h1>
+        <p className="text-gray-500 mb-8">
+          Save and manage your favorite links
+        </p>
 
         <button
-          onClick={signIn}
-          className="bg-black text-white px-6 py-3 rounded-lg hover:opacity-80"
+          onClick={() =>
+            supabase.auth.signInWithOAuth({
+              provider: "google",
+              options: {
+                redirectTo: `${location.origin}/`,
+              },
+            })
+          }
+          className="w-full py-3 rounded-lg bg-indigo-600 text-white font-medium hover:bg-indigo-700 transition"
         >
-          Login with Google
+          Continue with Google
         </button>
+
+        <p className="text-xs text-gray-400 mt-6">
+          Secure login powered by Supabase
+        </p>
       </div>
     </div>
   );
