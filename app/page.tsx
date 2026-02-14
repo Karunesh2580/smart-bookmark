@@ -92,15 +92,15 @@ export default function Home() {
         <div className="max-w-5xl mx-auto flex flex-col md:flex-row justify-between gap-4">
 
           <div>
-            <h1 className="text-2xl font-bold">Smart Bookmark</h1>
-            <p className="text-sm text-gray-600">
+            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold">Smart Bookmark</h1>
+            <p className="text-xs sm:text-sm md:text-base text-gray-600">
               Logged in as <b>{user.user_metadata.full_name}</b>
             </p>
           </div>
 
           <button
             onClick={logout}
-            className="px-4 py-2 bg-red-500 text-white rounded"
+            className="px-4 py-2 text-xs sm:text-sm md:text-base bg-red-500 text-white rounded"
           >
             Logout
           </button>
@@ -113,7 +113,7 @@ export default function Home() {
             placeholder="Search bookmarks..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full p-2 border rounded"
+            className="w-full p-2 text-sm sm:text-base md:text-base border rounded"
           />
         </div>
 
@@ -126,20 +126,20 @@ export default function Home() {
               value={title}
               onChange={e => setTitle(e.target.value)}
               placeholder="Title"
-              className="border p-2 rounded"
+              className="border p-2 text-sm sm:text-base md:text-base rounded"
             />
 
             <input
               value={url}
               onChange={e => setUrl(e.target.value)}
               placeholder="URL"
-              className="border p-2 rounded"
+              className="border p-2 text-sm sm:text-base md:text-base rounded"
             />
 
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="border p-2 rounded"
+              className="border p-2 text-sm sm:text-base md:text-base rounded"
             >
               {categories.map(c => (
                 <option key={c}>{c}</option>
@@ -148,7 +148,7 @@ export default function Home() {
 
             <button
               onClick={editing ? updateBookmark : addBookmark}
-              className="bg-indigo-600 text-white rounded"
+              className="bg-indigo-600 text-white text-sm sm:text-base md:text-base rounded"
             >
               {editing ? "Update" : "Save"}
             </button>
@@ -156,7 +156,7 @@ export default function Home() {
           </div>
         </div>
 
-        {loading && <p className="text-center mt-6 animate-pulse">Loading...</p>}
+        {loading && <p className="text-center mt-6 animate-pulse text-sm sm:text-base md:text-base">Loading...</p>}
 
         {/* BOOKMARKS */}
         <div className="max-w-5xl mx-auto mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -165,11 +165,11 @@ export default function Home() {
             <div key={b.id} className="bg-white p-4 rounded-xl shadow">
 
               <a href={b.url} target="_blank">
-                <h3 className="font-semibold">{b.title}</h3>
-                <p className="text-xs text-gray-500">{b.category}</p>
+                <h3 className="font-semibold text-sm sm:text-base md:text-lg">{b.title}</h3>
+                <p className="text-xs sm:text-sm md:text-base text-gray-500">{b.category}</p>
               </a>
 
-              <div className="flex justify-between mt-3 text-sm">
+              <div className="flex justify-between mt-3 text-xs sm:text-sm md:text-base">
 
                 <button
                   onClick={() => {
