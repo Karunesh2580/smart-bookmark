@@ -13,20 +13,20 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-100 to-purple-200 px-4">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-6 md:p-8 text-center">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-200 to-purple-300 px-4">
+      <div className="bg-white dark:bg-gray-900 w-full max-w-md rounded-2xl shadow-xl p-8 text-center">
 
-        <h1 className="text-2xl md:text-3xl font-bold mb-2">
+        <h1 className="text-3xl font-bold mb-2 dark:text-white">
           Smart Bookmark
         </h1>
 
-        <p className="text-gray-500 mb-6 text-sm md:text-base">
-          Login to save your favourite links
+        <p className="text-gray-500 mb-6">
+          Save links beautifully
         </p>
 
         <button
           onClick={signIn}
-          className="w-full py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition text-sm md:text-base"
+          className="w-full py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition"
         >
           Continue with Google
         </button>
