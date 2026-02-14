@@ -19,12 +19,11 @@ export default function Home() {
 
   const categories = ["General", "Study", "Work", "Personal"];
 
-  // ✅ FIX LOGIN REDIRECT
+  // ✅ AUTH FIX
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
-      if (!data.session) {
-        router.replace("/auth");
-      } else {
+      if (!data.session) router.replace("/auth");
+      else {
         setUser(data.session.user);
         fetchBookmarks();
       }
@@ -32,14 +31,24 @@ export default function Home() {
     });
   }, []);
 
-  // ✅ FIX DARK MODE
+  // ✅ DARK MODE REAL FIX
   useEffect(() => {
+    const root = window.document.documentElement;
+
     if (dark) {
-      document.documentElement.classList.add("dark");
+      root.classList.add("dark");
+      localStorage.setItem("theme", "dark");
     } else {
-      document.documentElement.classList.remove("dark");
+      root.classList.remove("dark");
+      localStorage.setItem("theme", "light");
     }
   }, [dark]);
+
+  // ✅ LOAD SAVED THEME
+  useEffect(() => {
+    const saved = localStorage.getItem("theme");
+    if (saved === "dark") setDark(true);
+  }, []);
 
   const fetchBookmarks = async () => {
     const { data } = await supabase
@@ -109,7 +118,10 @@ export default function Home() {
           </div>
 
           <div className="flex gap-2">
-            <button onClick={() => setDark(!dark)} className="px-4 py-2 border rounded dark:text-white">
+            <button
+              onClick={() => setDark(!dark)}
+              className="px-4 py-2 border rounded dark:text-white"
+            >
               {dark ? "Light" : "Dark"}
             </button>
 
