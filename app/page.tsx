@@ -13,41 +13,22 @@ export default function Home() {
   const [category, setCategory] = useState("General");
   const [bookmarks, setBookmarks] = useState<any[]>([]);
   const [editing, setEditing] = useState<any>(null);
-  const [dark, setDark] = useState(false);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
 
   const categories = ["General", "Study", "Work", "Personal"];
 
-  // ✅ AUTH FIX
+  // ✅ AUTH FIX (first login redirect)
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
-      if (!data.session) router.replace("/auth");
-      else {
+      if (!data.session) {
+        router.replace("/auth");
+      } else {
         setUser(data.session.user);
         fetchBookmarks();
       }
       setLoading(false);
     });
-  }, []);
-
-  // ✅ DARK MODE REAL FIX
-  useEffect(() => {
-    const root = window.document.documentElement;
-
-    if (dark) {
-      root.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-    } else {
-      root.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-    }
-  }, [dark]);
-
-  // ✅ LOAD SAVED THEME
-  useEffect(() => {
-    const saved = localStorage.getItem("theme");
-    if (saved === "dark") setDark(true);
   }, []);
 
   const fetchBookmarks = async () => {
@@ -105,30 +86,24 @@ export default function Home() {
 
   return (
     <div>
-      <div className="min-h-screen bg-gray-100 dark:bg-gray-900 px-4 py-6">
+      <div className="min-h-screen bg-gray-100 px-4 py-6">
 
         {/* HEADER */}
         <div className="max-w-5xl mx-auto flex flex-col md:flex-row justify-between gap-4">
 
           <div>
-            <h1 className="text-2xl font-bold dark:text-white">Smart Bookmark</h1>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
+            <h1 className="text-2xl font-bold">Smart Bookmark</h1>
+            <p className="text-sm text-gray-600">
               Logged in as <b>{user.user_metadata.full_name}</b>
             </p>
           </div>
 
-          <div className="flex gap-2">
-            <button
-              onClick={() => setDark(!dark)}
-              className="px-4 py-2 border rounded dark:text-white"
-            >
-              {dark ? "Light" : "Dark"}
-            </button>
-
-            <button onClick={logout} className="px-4 py-2 bg-red-500 text-white rounded">
-              Logout
-            </button>
-          </div>
+          <button
+            onClick={logout}
+            className="px-4 py-2 bg-red-500 text-white rounded"
+          >
+            Logout
+          </button>
 
         </div>
 
@@ -138,12 +113,12 @@ export default function Home() {
             placeholder="Search bookmarks..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full p-2 border rounded dark:bg-gray-700 dark:text-white"
+            className="w-full p-2 border rounded"
           />
         </div>
 
         {/* FORM */}
-        <div className="max-w-5xl mx-auto mt-4 bg-white dark:bg-gray-800 p-4 rounded-xl shadow">
+        <div className="max-w-5xl mx-auto mt-4 bg-white p-4 rounded-xl shadow">
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
 
@@ -151,20 +126,20 @@ export default function Home() {
               value={title}
               onChange={e => setTitle(e.target.value)}
               placeholder="Title"
-              className="border p-2 rounded dark:bg-gray-700 dark:text-white"
+              className="border p-2 rounded"
             />
 
             <input
               value={url}
               onChange={e => setUrl(e.target.value)}
               placeholder="URL"
-              className="border p-2 rounded dark:bg-gray-700 dark:text-white"
+              className="border p-2 rounded"
             />
 
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="border p-2 rounded dark:bg-gray-700 dark:text-white"
+              className="border p-2 rounded"
             >
               {categories.map(c => (
                 <option key={c}>{c}</option>
@@ -187,10 +162,10 @@ export default function Home() {
         <div className="max-w-5xl mx-auto mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
 
           {filtered.map((b) => (
-            <div key={b.id} className="bg-white dark:bg-gray-800 p-4 rounded-xl shadow">
+            <div key={b.id} className="bg-white p-4 rounded-xl shadow">
 
               <a href={b.url} target="_blank">
-                <h3 className="font-semibold dark:text-white">{b.title}</h3>
+                <h3 className="font-semibold">{b.title}</h3>
                 <p className="text-xs text-gray-500">{b.category}</p>
               </a>
 
@@ -208,7 +183,10 @@ export default function Home() {
                   Edit
                 </button>
 
-                <button onClick={() => deleteBookmark(b.id)} className="text-red-500">
+                <button
+                  onClick={() => deleteBookmark(b.id)}
+                  className="text-red-500"
+                >
                   Delete
                 </button>
 
